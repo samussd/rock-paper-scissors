@@ -4,7 +4,6 @@ let computerScore = document.querySelector('.game__computerScore');
 let gameLose = new Audio('sounds/game-lose.wav');
 let gameWin = new Audio('sounds/game-win.wav');
 let gameDraw = new Audio('sounds/game-draw.wav');
-let gameEnd = new Audio('sounds/game-end.wav');
 let computerSelect = new Audio('sounds/computer-select.wav');
 let playerSelect = new Audio('sounds/player-select.wav');
 
@@ -62,7 +61,7 @@ function playGame() {
             let computerResult = getComputerChoice();
             document.querySelector('.'+computerResult+'-btn').classList.add('-computer-selected');
 
-            await delay(800);
+            await delay(770);
 
             let result = roundResult(playerResult, computerResult);
 
@@ -87,7 +86,7 @@ function playGame() {
             playingRound = false;
 
             //check if game is over
-            if (+playerScore.textContent + +computerScore.textContent >= maxScore) {
+            if (+playerScore.textContent >= maxScore || +computerScore.textContent >= maxScore) {
                 endGame();
             }
         });
@@ -111,7 +110,6 @@ async function endGame() {
         btn.addEventListener('click', async function round(event) {
             if (playingRound || playingGame) return;
 
-            tryToPlay(playerSelect);
             let item = event.target;
 
             if (item.classList.contains('bo5-btn')) {
@@ -128,17 +126,16 @@ async function endGame() {
         });
     });
 
-    tryToPlay(gameEnd);
 
+}
+
+//sound button
+document.querySelector('.header__sound-btn').onclick = function() {
+    document.querySelector('.header__sound-btn').classList.toggle('-muted');
+    muted = !muted;
 }
 
 playGame();
-
-function game() {
-    for (let i=0; i<5; i++){
-        console.log(roundResult(prompt('Type your choice. (rock, paper, scissors)'), getComputerChoice()));
-    }
-}
 
 
 //game();

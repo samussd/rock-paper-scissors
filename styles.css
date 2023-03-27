@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
 html {
     height: 100vh;
 }
@@ -19,14 +24,40 @@ body {
 
 
 .header {
+    position: relative;
     display: flex;
     justify-content: center;
+    color: white;
 }
 
 .header__title {
-    color: white;
     text-align: center;
     margin: 30px auto;
+}
+
+
+.header__sound-btn {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    margin: auto;
+    transition: all .2s ease-in-out;
+}
+
+.header__sound-btn:hover {
+    cursor: pointer;
+}
+
+.header__sound-btn.-muted {
+    opacity: 50%;
+}
+
+
+.header__github {
+    position: absolute;
+    left: 10px;
+    top: 30px;
+    margin: auto;
 }
 
 .main {
