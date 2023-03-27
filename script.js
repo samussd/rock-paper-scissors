@@ -5,18 +5,23 @@ function getComputerChoice() {
 
 function playRound(playerSel, computerSel) {
     let result;
-    console.log(playerSel, computerSel);
-    if (playerSel === computerSel) result = 'draw';
+    let plyr = playerSel.toUpperCase();
+    let cptr = computerSel.toUpperCase();
+
+    if (!['ROCK', 'PAPER', 'SCISSORS'].includes(plyr)) 
+        return console.error('no winner. invalid result.');
+
+    if (plyr === cptr) result = 'draw';
     else if (
-        playerSel==='rock' && computerSel==='paper'
-        || playerSel==='paper' && computerSel==='scissors'
-        || playerSel==='scissors' && computerSel==='rock'
+        plyr==='ROCK' && cptr==='PAPER'
+        || plyr==='PAPER' && cptr==='SCISSORS'
+        || plyr==='SCISSORS' && cptr==='ROCK'
         ) result = 'computer';
     else result = 'player';
 
     switch (result) {
         case 'draw':
-            return 'The game is a draw.';
+            return `Draw. ${computerSel} is the same as ${playerSel}.`;
 
         case 'computer':
             return `You lose. ${computerSel} beats ${playerSel}.`;
@@ -29,7 +34,11 @@ function playRound(playerSel, computerSel) {
     }
 }
 
-let comp;
-for (let i=0; i<100; i++){
-    console.log(playRound(getComputerChoice(), getComputerChoice()));
+function game() {
+    for (let i=0; i<5; i++){
+        console.log(playRound(prompt('Type your choice. (rock, paper, scissors)'), getComputerChoice()));
+    }
 }
+
+
+game();
