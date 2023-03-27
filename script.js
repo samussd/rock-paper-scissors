@@ -1,12 +1,22 @@
-playerScore = document.querySelector('.game__playerScore');
-computerScore = document.querySelector('.game__computerScore');
+let playerScore = document.querySelector('.game__playerScore');
+let computerScore = document.querySelector('.game__computerScore');
 
-rockBtn = document.querySelector('.rock-btn');
-paperBtn = document.querySelector('.paper-btn');
-scissorsBtn = document.querySelector('.scissors-btn');
-buttons = document.querySelectorAll('.game__button');
+let gameLose = new Audio('sounds/game-lose.wav');
+let gameWin = new Audio('sounds/game-win.wav');
+let gameDraw = new Audio('sounds/game-draw.wav');
+let gameEnd = new Audio('sounds/game-end.wav');
+let computerSelect = new Audio('sounds/computer-select.wav');
+let playerSelect = new Audio('sounds/player-select.wav');
+
+let playingRound = false;
+let playingGame = true;
+let maxScore = 3;
+
+let muted = false;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const tryToPlay = audio => {if (!muted) audio.play();};
 
 function getComputerChoice() {
     let options = ['rock','paper','scissors'];
@@ -14,7 +24,6 @@ function getComputerChoice() {
 }
 
 function roundResult(playerSel, computerSel) {
-    let result;
     let plyr = playerSel.toUpperCase();
     let cptr = computerSel.toUpperCase();
 
@@ -33,30 +42,97 @@ function roundResult(playerSel, computerSel) {
         return 'player';
 }
 
-function playRound() {
-    let playerResult;
+
+function playGame() {
     document.querySelectorAll('.game__button').forEach(btn => {
-        btn.addEventListener('click', event => {
+        btn.addEventListener('click', async function gameloop(event) {
+            if (playingRound || !playingGame) return;
+            playingRound = true;
+
+
+            //handle game logic
+            tryToPlay(playerSelect);
             let item = event.target;
             item.classList.add('-player-selected');
-            playerResult = item.classList[1].slice(0,-4);
-        })
-    })
+            let playerResult = item.classList[1].slice(0,-4);
 
-    delay(1000);
+            await delay(530);
 
-    let computerResult = getComputerChoice();
-    document.querySelector(computerResult+'-btn').classList.add('-computer-selected');
+            tryToPlay(computerSelect);
+            let computerResult = getComputerChoice();
+            document.querySelector('.'+computerResult+'-btn').classList.add('-computer-selected');
 
-    delay(1000);
+            await delay(800);
 
-    let result = roundResult(playerResult, computerResult);
-    if (result==='player') playerScore.innerHTML = +playerScore.innerHTML + 1;
-    else if (result==='computer') computerScore.innerHTML = +computerScore.innerHTML + 1;
+            let result = roundResult(playerResult, computerResult);
 
-    console.log(result);
+            //update score and button styling
+            if (result==='player') {
+                playerScore.textContent = +playerScore.textContent + 1;
+                tryToPlay(gameWin);
+            }
+            else if (result==='computer') {
+                computerScore.textContent = +computerScore.textContent + 1;
+                tryToPlay(gameLose);
+            }
+            else if (result==='draw') {
+                tryToPlay(gameDraw);
+            }
+
+            document.querySelector('.'+computerResult+'-btn').classList.remove('-computer-selected');
+            item.classList.remove('-player-selected');
+            
+            await delay(200);
+
+            playingRound = false;
+
+            //check if game is over
+            if (+playerScore.textContent + +computerScore.textContent >= maxScore) {
+                endGame();
+            }
+        });
+    });
 }
-playRound();
+
+async function endGame() {
+    let game = document.querySelector('.game');
+    let gameOver = document.querySelector('.gameOver');
+    let gameWinner = document.querySelector('.game-winner');
+
+    gameWinner.textContent = (+playerScore.textContent > +computerScore.textContent) ? 'player' : 'computer';
+    game.style.display = 'none';
+    gameOver.style.display = 'flex';
+
+    playingGame = false;
+
+
+    //listener
+    document.querySelectorAll('.gameOver__button').forEach(btn => {
+        btn.addEventListener('click', async function round(event) {
+            if (playingRound || playingGame) return;
+
+            tryToPlay(playerSelect);
+            let item = event.target;
+
+            if (item.classList.contains('bo5-btn')) {
+                maxScore = 3;
+            } else if (item.classList.contains('infinite-btn')) {
+                maxScore = Infinity;
+            }
+
+            playingGame = true;
+            game.style.display = 'flex';
+            gameOver.style.display = 'none';
+            playerScore.textContent = '0';
+            computerScore.textContent = '0';
+        });
+    });
+
+    tryToPlay(gameEnd);
+
+}
+
+playGame();
 
 function game() {
     for (let i=0; i<5; i++){
