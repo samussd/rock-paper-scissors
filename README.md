@@ -7,7 +7,7 @@
 ---
 
 ## About
-Rock Paper Scissors game with sound effects. Contains 'best of 5' and 'infinite' game mode.
+Rock Paper Scissors game with sound effects. Contains 'best of 5' and 'infinite' game mode. <br/>
 Done as assignment of The Odin Project.
 
 ---
