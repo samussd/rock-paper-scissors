@@ -18,7 +18,7 @@ body {
     margin: 0 auto;
     max-width: 800px;
     height: 100%;
-    font-family: 'roboto', sans-serif;
+    font-family: 'Press Start 2P', cursive;
     font-weight: bold;
 }
 
@@ -33,6 +33,7 @@ body {
 .header__title {
     text-align: center;
     margin: 30px auto;
+    padding: 0 50px;
 }
 
 
@@ -94,8 +95,9 @@ body {
     
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+    gap: 50px;
     height: 100%;
 
     text-align: center;
@@ -105,6 +107,7 @@ body {
 .game__computerScore,
 .game__playerScore {
     font-size: 2rem;
+    text-align: center;
 }
 
 .gane__options {
@@ -120,19 +123,50 @@ body {
 }
 
 .game__button {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background-color: whitesmoke;
+    background-color: white;
     color: black;
     transition: all .1s ease-in-out;
 }
 
 .game__button:hover {
     cursor: pointer;
+}
+
+.rock-btn::after{
+    position: absolute;
+    content: "";
+    width: 32px;
+    height: 32px;
+    background:url("images/rock.png") no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+}
+
+.paper-btn::after{
+    position: absolute;
+    content: "";
+    width: 32px;
+    height: 32px;
+    background:url("images/paper.png") no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+}
+
+.scissors-btn::after{
+    position: absolute;
+    content: "";
+    width: 32px;
+    height: 32px;
+    background:url("images/scissors.png") no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
 }
 
 .-player-selected {
@@ -145,6 +179,44 @@ body {
 
 .-player-selected.-computer-selected {
     background-color: blue;
+}
+.game__computerInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.game__playerInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+
+.game__computerIcon {
+    width: 64px;
+    height: 64px;
+    background: 
+        transparent
+        url('images/computer.png')
+        no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+}
+
+.game__playerIcon {
+    width: 64px;
+    height: 64px;
+    background: 
+        transparent
+        url('images/player.png')
+        no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
 }
 
 .gameOver {
@@ -169,6 +241,7 @@ body {
 
 .gameOver__options {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 10px;
