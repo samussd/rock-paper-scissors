@@ -90,7 +90,7 @@ body {
 
 .game {
     height: 100%;
-    border: 1px solid white;
+    border: 2px solid white;
     border-radius: 5px;
     
     display: flex;
@@ -221,7 +221,7 @@ body {
 
 .gameOver {
     height: 100%;
-    border: 1px solid white;
+    border: 2px solid white;
     border-radius: 5px;
 
     display: none;
