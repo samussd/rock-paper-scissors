@@ -37,9 +37,19 @@ body {
 
 
 .header__sound-btn {
+    width: 32px;
+    height: 32px;
+    background: 
+        transparent
+        url('images/sound.png')
+        no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+
     position: absolute;
     right: 10px;
-    top: 30px;
+    top: 50%;
+    bottom: 50%;
     margin: auto;
     transition: all .2s ease-in-out;
 }
@@ -54,21 +64,34 @@ body {
 
 
 .header__github {
+    width: 32px;
+    height: 32px;
+    background: 
+        transparent
+        url('images/github.png')
+        no-repeat;
+    background-size: 100%;
+    image-rendering: pixelated;
+
     position: absolute;
     left: 10px;
-    top: 30px;
+    top: 50%;
+    bottom: 50%;
     margin: auto;
 }
 
 .main {
     height: 100%;
-    border: 1px solid white;
-    border-radius: 5px;
+    padding: 0 10px 10px;
     color: white;
 }
 
 
 .game {
+    height: 100%;
+    border: 1px solid white;
+    border-radius: 5px;
+    
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -102,7 +125,7 @@ body {
     align-items: center;
     width: 64px;
     height: 64px;
-    border-radius: 64px;
+    border-radius: 50%;
     background-color: whitesmoke;
     color: black;
     transition: all .1s ease-in-out;
@@ -125,6 +148,10 @@ body {
 }
 
 .gameOver {
+    height: 100%;
+    border: 1px solid white;
+    border-radius: 5px;
+
     display: none;
     flex-direction: column;
     justify-content: center;
