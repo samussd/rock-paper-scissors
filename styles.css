@@ -104,6 +104,12 @@ body {
     margin: 0 auto;
 }
 
+@media only screen and (max-height: 600px){
+    .game {
+        flex-direction: row;
+    }
+}
+
 .game__computerScore,
 .game__playerScore {
     font-size: 2rem;
