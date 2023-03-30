@@ -145,7 +145,7 @@ body {
     cursor: pointer;
 }
 
-.rock-btn::after{
+div[data-element='rock']::after{
     position: absolute;
     content: "";
     width: 32px;
@@ -155,7 +155,7 @@ body {
     image-rendering: pixelated;
 }
 
-.paper-btn::after{
+div[data-element='paper']::after{
     position: absolute;
     content: "";
     width: 32px;
@@ -165,7 +165,7 @@ body {
     image-rendering: pixelated;
 }
 
-.scissors-btn::after{
+div[data-element='scissors']::after{
     position: absolute;
     content: "";
     width: 32px;
@@ -175,15 +175,15 @@ body {
     image-rendering: pixelated;
 }
 
-.-player-selected {
+.--player-selected {
     background-color: lime;
 }
 
-.-computer-selected {
+.--computer-selected {
     background-color: red;
 }
 
-.-player-selected.-computer-selected {
+.--player-selected.--computer-selected {
     background-color: blue;
 }
 .game__computerInfo {

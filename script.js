@@ -1,17 +1,20 @@
-let playerScore = document.querySelector('.game__playerScore');
-let computerScore = document.querySelector('.game__computerScore');
+const playerScore = document.querySelector('.game__playerScore');
+const computerScore = document.querySelector('.game__computerScore');
+const game = document.querySelector('.game');
+const gameOver = document.querySelector('.gameOver');
+const gameWinner = document.querySelector('.game-winner');
 
-let gameLose = new Audio('sounds/game-lose.wav');
-let gameWin = new Audio('sounds/game-win.wav');
-let gameDraw = new Audio('sounds/game-draw.wav');
-let computerSelect = new Audio('sounds/computer-select.wav');
-let playerSelect = new Audio('sounds/player-select.wav');
+const gameLose = new Audio('sounds/game-lose.wav');
+const gameWin = new Audio('sounds/game-win.wav');
+const gameDraw = new Audio('sounds/game-draw.wav');
+const computerSelect = new Audio('sounds/computer-select.wav');
+const playerSelect = new Audio('sounds/player-select.wav');
 
 let playingRound = false;
 let playingGame = true;
+let muted = false;
 let maxScore = 5;
 
-let muted = false;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -41,92 +44,77 @@ function roundResult(playerSel, computerSel) {
         return 'player';
 }
 
-
-function playGame() {
-    document.querySelectorAll('.game__button').forEach(btn => {
-        btn.addEventListener('click', async function gameloop(event) {
-            if (playingRound || !playingGame) return;
-            playingRound = true;
+async function gameLoop(e) {
+    if (playingRound || !playingGame) return;
+    playingRound = true;
 
 
-            //handle game logic
-            tryToPlay(playerSelect);
-            let item = event.target;
-            item.classList.add('-player-selected');
-            let playerResult = item.classList[1].slice(0,-4);
+    //handle game logic
+    tryToPlay(playerSelect);
+    let item = e.target;
+    item.classList.add('--player-selected');
+    let playerResult = item.dataset.element;
 
-            await delay(530);
+    await delay(530);
 
-            tryToPlay(computerSelect);
-            let computerResult = getComputerChoice();
-            document.querySelector('.'+computerResult+'-btn').classList.add('-computer-selected');
+    tryToPlay(computerSelect);
+    let computerResult = getComputerChoice();
+    document.querySelector(`div[data-element="${computerResult}"]`).classList.add('--computer-selected');
 
-            await delay(770);
+    await delay(770);
 
-            let result = roundResult(playerResult, computerResult);
+    let result = roundResult(playerResult, computerResult);
 
-            //update score and button styling
-            if (result==='player') {
-                playerScore.textContent = +playerScore.textContent + 1;
-                tryToPlay(gameWin);
-            }
-            else if (result==='computer') {
-                computerScore.textContent = +computerScore.textContent + 1;
-                tryToPlay(gameLose);
-            }
-            else if (result==='draw') {
-                tryToPlay(gameDraw);
-            }
+    //update score and button styling
+    if (result==='player') {
+        playerScore.textContent = +playerScore.textContent + 1;
+        tryToPlay(gameWin);
+    }
+    else if (result==='computer') {
+        computerScore.textContent = +computerScore.textContent + 1;
+        tryToPlay(gameLose);
+    }
+    else if (result==='draw') {
+        tryToPlay(gameDraw);
+    }
 
-            document.querySelector('.'+computerResult+'-btn').classList.remove('-computer-selected');
-            item.classList.remove('-player-selected');
-            
-            await delay(200);
+    document.querySelector(`div[data-element="${computerResult}"]`).classList.remove('--computer-selected');
+    item.classList.remove('--player-selected');
+    
+    await delay(200);
 
-            playingRound = false;
+    playingRound = false;
 
-            //check if game is over
-            if (+playerScore.textContent >= maxScore || +computerScore.textContent >= maxScore) {
-                endGame();
-            }
-        });
-    });
+    //check if game is over
+    if (+playerScore.textContent >= maxScore || +computerScore.textContent >= maxScore) {
+        endGame();
+    }
+}
+
+async function restartGame(e) {
+    if (playingRound || playingGame) return;
+
+    let item = e.target;
+
+    if (item.classList.contains('bo5-btn')) {
+        maxScore = 5;
+    } else if (item.classList.contains('infinite-btn')) {
+        maxScore = Infinity;
+    }
+
+    playingGame = true;
+    game.style.display = 'flex';
+    gameOver.style.display = 'none';
+    playerScore.textContent = '0';
+    computerScore.textContent = '0';
 }
 
 async function endGame() {
-    let game = document.querySelector('.game');
-    let gameOver = document.querySelector('.gameOver');
-    let gameWinner = document.querySelector('.game-winner');
-
     gameWinner.textContent = (+playerScore.textContent > +computerScore.textContent) ? 'player' : 'computer';
     game.style.display = 'none';
     gameOver.style.display = 'flex';
 
     playingGame = false;
-
-
-    //listener
-    document.querySelectorAll('.gameOver__button').forEach(btn => {
-        btn.addEventListener('click', async function round(event) {
-            if (playingRound || playingGame) return;
-
-            let item = event.target;
-
-            if (item.classList.contains('bo5-btn')) {
-                maxScore = 5;
-            } else if (item.classList.contains('infinite-btn')) {
-                maxScore = Infinity;
-            }
-
-            playingGame = true;
-            game.style.display = 'flex';
-            gameOver.style.display = 'none';
-            playerScore.textContent = '0';
-            computerScore.textContent = '0';
-        });
-    });
-
-
 }
 
 //sound button
@@ -135,7 +123,12 @@ document.querySelector('.header__sound-btn').onclick = function() {
     muted = !muted;
 }
 
-playGame();
+//listeners
+document.querySelectorAll('.game__button').forEach(btn => {
+    btn.addEventListener('click', e => gameLoop(e));
+});
 
+document.querySelectorAll('.gameOver__button').forEach(btn => {
+    btn.addEventListener('click', e => restartGame(e));
+});
 
-//game();
