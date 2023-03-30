@@ -9,7 +9,7 @@ let playerSelect = new Audio('sounds/player-select.wav');
 
 let playingRound = false;
 let playingGame = true;
-let maxScore = 3;
+let maxScore = 5;
 
 let muted = false;
 
@@ -113,7 +113,7 @@ async function endGame() {
             let item = event.target;
 
             if (item.classList.contains('bo5-btn')) {
-                maxScore = 3;
+                maxScore = 5;
             } else if (item.classList.contains('infinite-btn')) {
                 maxScore = Infinity;
             }
